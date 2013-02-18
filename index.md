@@ -3,9 +3,11 @@
 このサイトは JavaScript を使って iOS や Android などに対応したネイティブアプリケーションを作ることができる、  
 Appcelerator Titanium について紹介する非公式サイトです。
 
+===
+
 ## Appcelerator Titanium
 
-Appcelerator Titanium (タイタニウム) は JavaScript を使って iOS や Android に対応したネイティブアプリケーション、複数のプラットフォームに対応するモバイル Web アプリケーションやハイブリッドアプリケーションを構築することができる開発プラットホームです。シリコンバレーに拠点を置く [Appcelerator Inc](http://www.appcelerator.com/) が [GitHub 上でオープンソースソフトウェアとして開発](https://github.com/appcelerator/titanium_mobile)しています。
+Appcelerator Titanium (タイタニウム) は JavaScript を使って iOS や Android に対応したネイティブアプリケーション、複数のプラットフォームに対応するモバイル Web アプリケーションやハイブリッドアプリケーションを構築することができる開発プラットフォームです。シリコンバレーに拠点を置く [Appcelerator Inc](http://www.appcelerator.com/) が [GitHub 上でオープンソースソフトウェアとして開発](https://github.com/appcelerator/titanium_mobile)しています。
 
 ### 特徴と比較
 
@@ -61,26 +63,40 @@ Titanium はウェブアプリケーションのフロントエンド構築に�
 
 例えば、毎秒 30 フレームを安定して出したいゲームの構築や、非常に複雑な UI を持ったアプリケーション、 Instagram のように画像にエフェクトをかけるようなアプリケーションの構築には向いていません。このような問題に対処するためには、Titanium を使わず、純粋なネイティブアプリケーションとして開発を行うか、後述するモジュールを使う方法があります。
 
+### モジュール
+
+モジュールは Titanium の機能を拡張するためのものです。 Titanium SDK はアプリケーションを動作させるプラットフォームの SDK にブリッジして動作します。その為、 Titanium SDK がブリッジしていない機能はいくら iOS SDK や Android SDK が API を提供していても使うことができません。**ネイティブモジュール**はこれをカバーします。
+
+ネイティブモジュールは Objective-C や Java で書かれたプラットフォーム毎に最適化されたモジュールです。プラットフォームが提供する SDK の機能を呼び出して使うことができるため Titanium SDK そのものを拡張させることができます。例えば Instagram のようなカメラで撮影した写真にエフェクトをかけるための [Filterable Camera](https://marketplace.appcelerator.com/apps/1192?1653978732) やゲームエンジンである [Platino (開発中)](http://lanica.co/about/platino/) があります。
+
+ネイティブモジュール以外には **JavaScript モジュール**があります。 JavaScript モジュールは Titanium SDK の範囲内で一連の処理を様々なプロジェクトで使い回しが効くように分離し、モジュールの形で利用できるようにしたものです。 Node.js でも使われている CommonJS モジュールを実装しており、一部は Node.js 向けに提供されているモジュールを使うことも可能です。
+
+> ##### JavaScript モジュールの例
+> ```
+> /* net.imthinker.utils.js */
+> exports.myAwesomeFunc = function () {
+>     // My awesome funciton
+> };
+> 
+> /* app.js */
+> var myAwesomeUtils = require("net.imthinker.utils");
+> myAwesomeUtils.myAwesomeFunc();
+> ```
+
+===
+
 ## Appcelerator Alloy
 
-Appcelerator Alloy (アロイ) は Titanium 3.0 以降に提供されている **Titanium 用の公式 MVC フレームワーク**です。先述の通り、 Titanium は UI やロジックを全て JavaScript で書きます。初めのうちはコードの見通しも良く、コードの管理は容易ですが、 UI が複雑になってきたり、多くのロジックを組み込んでいるうちにコードの管理は難しくなってきます。
+Appcelerator Alloy (アロイ) は Titanium 3.0 以降に提供されている **Titanium 用の公式 MVC フレームワーク**です。先述の通り、 Titanium は UI やロジックを全て JavaScript で書きます。アプリケーションの規模が大きくなってくると UI やロジックのコードが入り乱れるので、コードの管理が難しくなってきます。
 
-また、ユーザによって様々なベストプラクティスが持ち込まれた結果、ベストプラクティスが一貫しないという問題も抱えていました。そこで Appcelerator が出した解答が「Alloy」です。 Alloy ではユーザインターフェースを持つアプリケーションがよく使う MVC アーキテクチャに則ったアプリケーション開発を可能にします。 Alloy の規約に従った開発を行うことで、開発の管理を容易にします。
+そこで Appcelerator がベストプラクティスとして提供を開始したのが「Alloy」です。 Alloy は UI は XML と TSS (Titanium Style Sheet) を使って構築し、これらを監視し、ユーザの操作に応じた処理とデータモデルを JavaScript で書きます。 HTML/CSS/JavaScript の関係をイメージすると分かりやすいと思います。
 
-Alloy は Titanium のモジュールとして動作します。 Titanium 開発のための IDE である Titanium Studio をご利用の方であれば、 Titanium Studio 3 以降では新しいプロジェクトを作るときに Alloy を使ったプロジェクトを作成できます。また、 CLI を使っている方は Node.js のモジュールとして提供されていて、 npm を経由して Alloy をインストールすることが可能です。
+Alloy は Titanium のモジュールとして動作します。 Titanium 開発のための IDE である Titanium Studio をご利用の方であれば、 Titanium Studio 3 以降では新しいプロジェクトを作るときに Alloy を使ったプロジェクトを作成できます。また、 Titanium CLI をご利用の方は Node.js のモジュールとして提供されていますので、 npm を経由して Alloy をインストールすることが可能です。
 
-```
-$ sudo npm -g install alloy
-```
-
-### Alloy MVC
-
-Alloy は MVC アーキテクチャに則ってアプリケーションを構築していくことができます。 Alloy を使うことで UI を XML + TSS (Titanium Style Sheet) で、ロジックとデータモデルを JavaScript で記述することができ、コードを役割に応じて簡単に分割できます。
-
-* M (Model) : コントローラから受け取った情報の正しさを確かめたり、加工をしたり、保存したりする。
-* V (View) : XML と TSS で構築された UI 。ユーザは UI を経由して Controller をに情報を渡す。
-* C (Controller) : View を監視して入力された情報や操作を元に、適切な処理を走らせ、 View に結果を反映させる。
-
-単にコードを分割するだけでなく、様々なアプリケーションでよく使う機能を「ウィジェット」という仕組みで分割して使い回したり、「テーマ」という仕組みで UI の装飾を簡単に切り替えたり、ビルトインのアニメーション機能を使うことができたりするなど、素直に Titanium を使ってアプリケーションを構築するよりも便利な仕組みが多く提供されています。
+> ##### npm 経由で Alloy をインストールする
+> ```
+> $ sudo npm -g install alloy
+> ```
 
 ### Alloy の使用例
+
